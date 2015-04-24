@@ -8,6 +8,11 @@ class GrOsmosdr < Formula
     url "https://pypi.python.org/packages/source/C/Cheetah/Cheetah-2.4.4.tar.gz"
     sha1 "c218f5d8bc97b39497680f6be9b7bd093f696e89"
   end
+  
+    resource "lxml" do
+    url "https://pypi.python.org/packages/source/l/lxml/lxml-3.4.1.tar.gz"
+    sha1 "c09f4e8e71fc9d49fb43bf33821da816ce887396"
+  end
 
   depends_on "cmake" => :build
   depends_on "gnuradio"
