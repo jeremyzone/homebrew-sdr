@@ -64,15 +64,60 @@ class GrOsmosdr < Formula
   depends_on "gr-iqbal"
   depends_on "librtlsdr"
 
-def install
-    mkdir "build" do
-      args = %W[
-        -DPYTHON_LIBRARY='#{%x(python-config --prefix).chomp}/lib/libpython2.7.dylib'
-      ] + std_cmake_args
+  def install
+    ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
+    python_args = ["install", "--prefix=#{libexec}"]
+    %w[Cheetah lxml].each do |r|
+      resource(r).stage { system "python", "setup.py", *python_args }
+    end
+    if build.without? "brewed-python"
+      resource("matplotlib").stage do
+        if MacOS.version >= :yosemite
+          inreplace "setupext.py", "'freetype2', 'ft2build.h',", "'freetype2', 'freetype2/ft2build.h',"
+        end
+        system "python", "setup.py", *python_args
+      end
+    end
+    python_fortran_args = ["build", "--fcompiler=gfortran", *python_args]
+    %w[numpy scipy].each do |r|
+      resource(r).stage { system "python", "setup.py", *python_fortran_args }
+    end
 
-      system "cmake", "..", *args
+    if build.with? "docs"
+      resource("docutils").stage do
+        system "python", "setup.py", "install", "--prefix=#{buildpath}"
+      end
+    end
+
+    mkdir "build" do
+      ENV["CMAKE_C_COMPILER"] = "#{ENV.cc}"
+      ENV["CMAKE_CXX_COMPILER"] = "#{ENV.cxx}"
+
+      args = %W[
+        -DCMAKE_PREFIX_PATH=#{prefix}
+        -DENABLE_DOXYGEN=Off
+      ]
+      if build.with? "brewed-python"
+        args << "-DPYTHON_LIBRARY='#{%x(python-config --prefix).chomp}/lib/libpython2.7.dylib'"
+      end
+
+      if build.with? "docs"
+        args << "-DSPHINX_EXECUTEABLE=#{buildpath}/bin/rst2html.py"
+      else
+        args << "-DENABLE_SPHINX=OFF"
+      end
+
+      if build.with? "qt"
+        args << "-DENABLE_GR_QTGUI=ON"
+      else
+        args << "-DENABLE_GR_QTGUI=OFF"
+      end
+
+      system "cmake", "..", *args, *std_cmake_args
       system "make"
       system "make install"
+
+      end
     end
   end
 end
