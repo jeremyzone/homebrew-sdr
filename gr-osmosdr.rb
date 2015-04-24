@@ -116,10 +116,6 @@ class GrOsmosdr < Formula
       system "cmake", "..", *args, *std_cmake_args
       system "make"
       system "make install"
-
-      inreplace "#{prefix}/etc/gnuradio/conf.d/grc.conf" do |s|
-        s.gsub! "#{prefix}/", "#{HOMEBREW_PREFIX}/"
-      end
     end
   end
 end
