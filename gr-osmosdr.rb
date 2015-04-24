@@ -119,4 +119,3 @@ class GrOsmosdr < Formula
 
     end
   end
-end
