@@ -13,6 +13,12 @@ class GrOsmosdr < Formula
     url "https://pypi.python.org/packages/source/l/lxml/lxml-3.4.1.tar.gz"
     sha1 "c09f4e8e71fc9d49fb43bf33821da816ce887396"
   end
+  if build.without? "brewed-python"
+    resource "matplotlib" do
+      url "https://downloads.sourceforge.net/project/matplotlib/matplotlib/matplotlib-1.4.2/matplotlib-1.4.2.tar.gz"
+      sha1 "242c57ddae808b1869cad4b08bb0973c513e12f8"
+    end
+  end
 
   depends_on "cmake" => :build
   depends_on "gnuradio"
