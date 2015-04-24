@@ -4,6 +4,11 @@ class GrOsmosdr < Formula
   homepage "http://sdr.osmocom.org/trac/wiki/GrOsmoSDR"
   head "git://git.osmocom.org/gr-osmosdr"
 
+  resource "Cheetah" do
+    url "https://pypi.python.org/packages/source/C/Cheetah/Cheetah-2.4.4.tar.gz"
+    sha1 "c218f5d8bc97b39497680f6be9b7bd093f696e89"
+  end
+
   depends_on "cmake" => :build
   depends_on "gnuradio"
   depends_on "gr-iqbal"
