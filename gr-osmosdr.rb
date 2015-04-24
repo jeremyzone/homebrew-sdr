@@ -20,11 +20,6 @@ class GrOsmosdr < Formula
   depends_on "librtlsdr"
 
   def install
-     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
-    python_args = ["install", "--prefix=#{libexec}"]
-    %w[Cheetah lxml].each do |r|
-      resource(r).stage { system "python", "setup.py", *python_args }
-    end
     mkdir "build" do
       args = %W[
         -DPYTHON_LIBRARY='#{%x(python-config --prefix).chomp}/lib/libpython2.7.dylib'
