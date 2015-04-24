@@ -118,4 +118,6 @@ class GrOsmosdr < Formula
       system "make install"
 
     end
+    end
   end
+end
