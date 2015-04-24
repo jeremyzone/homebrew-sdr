@@ -71,6 +71,7 @@ def install
       ] + std_cmake_args
 
       system "cmake", "..", *args
+      system "make"
       system "make install"
     end
   end
