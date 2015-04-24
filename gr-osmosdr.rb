@@ -24,6 +24,9 @@ class GrOsmosdr < Formula
   depends_on "gnuradio"
   depends_on "gr-iqbal"
   depends_on "librtlsdr"
+    if build.with? "brewed-python"
+    depends_on "matplotlib" => :python
+  end
 
   def install
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
